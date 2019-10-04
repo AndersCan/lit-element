@@ -44,7 +44,7 @@ function customElementRenderDirective(properties) {
 
       part.setValue(result);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       part.setValue(undefined);
     }
   };

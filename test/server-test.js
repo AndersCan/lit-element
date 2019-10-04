@@ -1,5 +1,6 @@
 import './fixtures/some-element.js';
 import './fixtures/some-error-element.js';
+import './fixtures/some-static-element.js';
 import { html as h, renderToString } from '@popeindustries/lit-html';
 import { customElementRender } from '../src/directives/custom-element-render.js';
 import { expect } from 'chai';
@@ -21,6 +22,19 @@ describe('server rendering', () => {
     const data = { text: 'hi', othertext: 'bye' };
     const template = h`<some-element>${customElementRender({ data })}</some-element>`;
     const expected = '<some-element><p>hi <span>bye</span></p></some-element>';
+    expect(compareMarkup(await renderToString(template), expected)).to.equal(true);
+  });
+
+  it('should render a static element with a whitespace before `>`', async () => {
+    const template = h`<some-static-element >${customElementRender()}</some-static-element>`;
+    const expected = '<some-static-element><p>some-static-element</p></some-static-element>';
+    expect(compareMarkup(await renderToString(template), expected)).to.equal(true);
+  });
+
+  it('should render a static element with an attribute', async () => {
+    const template = h`<some-static-element class="something">${customElementRender()}</some-static-element>`;
+    const expected =
+      '<some-static-element class="something"><p>some-static-element</p></some-static-element>';
     expect(compareMarkup(await renderToString(template), expected)).to.equal(true);
   });
 });
